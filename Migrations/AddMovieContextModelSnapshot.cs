@@ -21,9 +21,8 @@ namespace JoelHiltonMovies.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -52,13 +51,15 @@ namespace JoelHiltonMovies.Migrations
 
                     b.HasKey("MovieId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Movies");
 
                     b.HasData(
                         new
                         {
                             MovieId = 1,
-                            Category = "Fantasy",
+                            CategoryId = 3,
                             Director = "Chris Columbus",
                             Edited = false,
                             Rating = "PG",
@@ -68,7 +69,7 @@ namespace JoelHiltonMovies.Migrations
                         new
                         {
                             MovieId = 2,
-                            Category = "Fantasy",
+                            CategoryId = 3,
                             Director = "Chris Columbus",
                             Edited = false,
                             Rating = "PG",
@@ -78,13 +79,83 @@ namespace JoelHiltonMovies.Migrations
                         new
                         {
                             MovieId = 3,
-                            Category = "Fantasy",
+                            CategoryId = 3,
                             Director = "Alfonso Cuaron",
                             Edited = false,
                             Rating = "PG",
                             Title = "Harry Potter and The Prisoner of Azkaban",
                             Year = "2004"
                         });
+                });
+
+            modelBuilder.Entity("JoelHiltonMovies.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Fantasy"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            CategoryName = "Drama"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            CategoryName = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            CategoryId = 7,
+                            CategoryName = "Miscellaneous"
+                        },
+                        new
+                        {
+                            CategoryId = 8,
+                            CategoryName = "Television"
+                        },
+                        new
+                        {
+                            CategoryId = 9,
+                            CategoryName = "VHS"
+                        });
+                });
+
+            modelBuilder.Entity("JoelHiltonMovies.Models.AddMovie", b =>
+                {
+                    b.HasOne("JoelHiltonMovies.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
